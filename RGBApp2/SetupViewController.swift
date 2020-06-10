@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol ColorViewControllerDelegate {
+    func updateView(color: UIColor)
+}
+
 class SetupViewController: UIViewController {
 
     // MARK: - IB Outlets
@@ -25,18 +29,18 @@ class SetupViewController: UIViewController {
     @IBOutlet var greenTextField: UITextField!
     @IBOutlet var blueTextField: UITextField!
     
-    var color: UIColor!
-    
-    weak var myDelegate: StartViewControllerDelegate?
+    // MARK: - Public Properties
+    var currentColor: UIColor!
+    var myDelegate: ColorViewControllerDelegate!
     
     // MARK: - Life Cycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
         viewSettings()
-        viewRGB.backgroundColor = color
-        colorToSliders(color: color)
-        changeBackgroundColorView()
+        viewRGB.backgroundColor = currentColor
+        colorToSliders(color: currentColor)
+        //changeBackgroundColorView()
         setValue(for: redLabel, and: redTextField, from: redSlider)
         setValue(for: greenLabel, and: greenTextField, from: greenSlider)
         setValue(for: blueLabel, and: blueTextField, from: blueSlider)
@@ -63,7 +67,7 @@ class SetupViewController: UIViewController {
     }
     
     @IBAction func doneButtonPressed() {
-        myDelegate?.updateView(color: color)
+        myDelegate?.updateView(color: currentColor)
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -86,7 +90,7 @@ class SetupViewController: UIViewController {
             blue: CGFloat(blueSlider.value),
             alpha: 1
         )
-        color = viewRGB.backgroundColor
+        currentColor = viewRGB.backgroundColor
     }
     
     private func colorToSliders(color: UIColor) {

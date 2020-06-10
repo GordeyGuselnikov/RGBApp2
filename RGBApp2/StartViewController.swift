@@ -8,24 +8,20 @@
 
 import UIKit
 
-class StartViewController: UIViewController, StartViewControllerDelegate {
+class StartViewController: UIViewController {
 
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "Setup" {
             let setupVC = segue.destination as! SetupViewController
-            let color = view.backgroundColor.self
-            setupVC.color = color
             setupVC.myDelegate = self
+            setupVC.currentColor = view.backgroundColor
         }
     }
-    
+}
+
+extension StartViewController: ColorViewControllerDelegate {
     func updateView(color: UIColor) {
         view.backgroundColor = color
     }
 }
-
-protocol StartViewControllerDelegate: class {
-    func updateView(color: UIColor)
-}
-
